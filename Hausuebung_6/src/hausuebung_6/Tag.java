@@ -14,8 +14,8 @@ import java.util.List;
  */
 public class Tag {
 
-    private String content;
-    private String wholeTag;
+    private String content = "";
+    private String tag;
     private boolean hasMatch = false;
     final private List<String> notClosedTags = new ArrayList<>();
     final private List<String> finishedLines = new ArrayList<>();
@@ -23,21 +23,38 @@ public class Tag {
     public Tag(String line) {
 
         if (line.startsWith("<") && line.endsWith(">")) {
-            String[] splittedValue = line.split(">");
-            String firstTag = splittedValue[0] + ">";
-            wholeTag = firstTag.substring(1, firstTag.length() - 1);
+            String[] splitValue = line.split(">");
+            String startTag = splitValue[0] + ">";
+            tag = startTag.substring(1, startTag.length() - 1);
 
-            if (line.endsWith("</" + wholeTag + ">")) {
-                content = line.substring(firstTag.length(), line.length() - (wholeTag.length() + 3));
-            } else {
-                hasMatch = false;
+            if (line.endsWith("</" + tag + ">")) {
+                content = line.substring(startTag.length(), line.length() - (tag.length() + 3));
+                hasMatch = true;
             }
         } else {
-            hasMatch = false;
+            hasMatch = true;
             content = line;
         }
     }
 
+    public String getContent() {
+        String temp = "";
+        if (!tag.equals("")) {
+            temp = "\n";
+        }
+        if (hasMatch) {
+            if (content.equals("")) {
+                temp += tag + " has no content";
+            } else {
+                temp += content;
+            }
+        } else {
+            temp += tag + " has an error!!";
+        }
+        return temp;
+    }
+
+    /*
     public void splitContent() {
         // while (line.startsWith("<")) {
         notClosedTags.add(line.substring(line.indexOf("<"), line.indexOf(">") + 1));
@@ -85,5 +102,5 @@ public class Tag {
 
         finishedLines.addAll(tempLines);
 
-    }
+    }*/
 }

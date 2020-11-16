@@ -20,16 +20,25 @@ import java.util.logging.Logger;
  */
 public class Parser {
 
-    final private String fileName;
+    final private File fileName;
     final List<String> lines = new ArrayList<>();
-    final private List<String> notClosedTags = new ArrayList<>();
-    final private List<String> finishedLines = new ArrayList<>();
+    // final private List<String> notClosedTags = new ArrayList<>();
+    //final private List<String> finishedLines = new ArrayList<>();
 
-    public Parser(String fileName) {
+    public Parser(File fileName) {
         this.fileName = fileName;
     }
 
-    public List<String> readFileWithStream() {
+    public String readFileWithStream() {
+        String result = "";
+        try {
+            result = Files.lines(fileName.toPath()).reduce((string1, string2) -> string1 + string2)
+                    .orElse("");
+        } catch (IOException ex) {
+            Logger.getLogger(Parser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+        /*
         try {
             File file = new File(fileName);
 
@@ -51,9 +60,36 @@ public class Parser {
         } catch (IOException ex) {
             Logger.getLogger(Parser.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return lines;
+        return lines;*/
     }
 
+    public static List<PrioritisedOutput> splitLine(String content) {
+        List<PrioritisedOutput> outputs = new ArrayList<>();
+        String temp = "";
+        int j = 1;//counter
+        for (int i = 0; i < content.length(); i++) //i = index
+        {
+            if (i + 1 < content.length() && content.charAt(i) == '<' && content.charAt(i + 1) != '/') {
+                if (!temp.equals("")) {
+                    outputs.add(new PrioritisedOutput(j, temp));
+                    j++;
+                }
+                temp = "";
+                int tagIn;// index of Tag
+                for (tagIn = i; content.charAt(tagIn) != '>'; tagIn++) {
+                    temp += content.charAt(tagIn);
+                }
+                temp += ">";
+                i = tagIn;
+
+                int counter = 1;
+                //TODO 78
+            }
+        }
+        return outputs;
+    }
+
+    /*
     public void reduceTags() {
         int i = 0;
         int lineCount = 0;
@@ -117,6 +153,5 @@ public class Parser {
 
     public List<String> getFinishedLines() {
         return finishedLines;
-    }
-
+    }*/
 }

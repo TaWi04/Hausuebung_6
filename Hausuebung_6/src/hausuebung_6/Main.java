@@ -6,6 +6,8 @@
 package hausuebung_6;
 
 import java.io.File;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  *
@@ -22,9 +24,12 @@ public class Main {
         for (String line : parser.lines) {
             System.out.println(line);
         }
-        parser.reduceTags();
-        System.out.println(parser.getFinishedLines());
-        System.out.println(parser.getNotClosedTags());
+
+        ExecutorService ex = Executors.newCachedThreadPool();
+
+        // parser.reduceTags();
+        //System.out.println(parser.getFinishedLines());
+        //System.out.println(parser.getNotClosedTags());
     }
 
 }

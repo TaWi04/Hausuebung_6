@@ -11,8 +11,8 @@ package hausuebung_6;
  */
 public class PrioritisedOutput implements Comparable<PrioritisedOutput> {
 
-    private int prioity;
-    private String result;
+    private final int prioity;
+    private final String result;
 
     public PrioritisedOutput(int prioity, String result) {
         this.prioity = prioity;
