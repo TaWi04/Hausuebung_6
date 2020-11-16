@@ -5,6 +5,8 @@
  */
 package hausuebung_6;
 
+import java.io.File;
+
 /**
  *
  * @author Tamara
@@ -15,7 +17,14 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Parser parser = new Parser("simple1.txt");
+        parser.readFileWithStream();
+        for (String line : parser.lines) {
+            System.out.println(line);
+        }
+        parser.reduceTags();
+        System.out.println(parser.getFinishedLines());
+        System.out.println(parser.getNotClosedTags());
     }
 
 }
